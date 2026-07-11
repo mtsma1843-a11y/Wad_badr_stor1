@@ -4,55 +4,689 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WAD BADR STOR - وكالة لتحويل العملات</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <style>
-    :root { --primary: #0a2a8f; --accent: #e31e24; --bg: #f0f4ff; --card: #ffffff; --text: #1a1a2e; --radius: 24px; }
+    :root {
+      --primary: #0a2a8f;
+      --primary-light: #1e4ad4;
+      --accent: #e31e24;
+      --accent-light: #ff3b3f;
+      --bg: #f0f4ff;
+      --card: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #6b7280;
+      --shadow: 0 10px 40px rgba(10,42,143,0.12);
+      --shadow-hover: 0 20px 60px rgba(10,42,143,0.2);
+      --radius: 24px;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Tajawal', sans-serif; background: var(--bg); min-height: 100vh; }
-    .container { max-width: 480px; margin: 0 auto; padding: 24px 16px 60px; }
-    .header { text-align: center; margin-bottom: 32px; }
-    .store-name { font-size: 32px; font-weight: 900; color: var(--primary); }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .bg-anim {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-anim .orb {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.08;
+      animation: float 20s infinite ease-in-out;
+    }
+    .orb:nth-child(1) { width: 300px; height: 300px; background: var(--primary); top: -100px; right: -50px; animation-delay: 0s; }
+    .orb:nth-child(2) { width: 200px; height: 200px; background: var(--accent); bottom: 10%; left: -50px; animation-delay: -5s; }
+    .orb:nth-child(3) { width: 150px; height: 150px; background: var(--primary-light); top: 40%; right: 10%; animation-delay: -10s; }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -30px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    /* ===== COMPACT ICON GRID WITH REAL IMAGES ===== */
+    .icon-grid-wrap {
+      margin-bottom: 24px;
+      animation: slideDown 0.8s ease-out;
+    }
+    .icon-grid-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .icon-grid-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 6px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(10,42,143,0.08);
+      border: 1px solid rgba(10,42,143,0.06);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .icon-grid-item:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 8px 24px rgba(10,42,143,0.15);
+      border-color: rgba(10,42,143,0.2);
+    }
+    .icon-grid-item .app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #f8f9fa;
+    }
+    .icon-grid-item .app-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+    .icon-grid-item span {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      animation: slideDown 0.8s ease-out 0.1s both;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .logo-icon {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 30px rgba(10,42,143,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .logo-icon::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+    .logo-icon svg { width: 36px; height: 36px; fill: white; position: relative; z-index: 1; }
+
+    .store-name {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
     .store-name span { color: var(--accent); }
-    .tagline { font-size: 15px; color: #6b7280; margin-top: 8px; }
-    .stats-bar { display: flex; justify-content: center; gap: 24px; margin-bottom: 28px; }
-    .stat-item { text-align: center; padding: 12px 20px; background: var(--card); border-radius: 16px; box-shadow: 0 10px 40px rgba(10,42,143,0.12); }
-    .stat-num { font-size: 22px; font-weight: 900; color: var(--primary); }
-    .stat-label { font-size: 11px; color: #6b7280; margin-top: 4px; }
-    .links-grid { display: flex; flex-direction: column; gap: 14px; }
-    .link-card { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--card); border-radius: var(--radius); box-shadow: 0 10px 40px rgba(10,42,143,0.12); text-decoration: none; color: inherit; }
-    .link-icon { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: #f8f9fa; }
-    .link-title { font-size: 16px; font-weight: 800; color: var(--text); }
-    .link-desc { font-size: 12px; color: #6b7280; }
-    .footer { text-align: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(10,42,143,0.08); font-size: 12px; color: #6b7280; }
+
+    .tagline {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #e8f0ff 0%, #f0f7ff 100%);
+      border: 1px solid rgba(10,42,143,0.15);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 12px;
+    }
+    .verified-badge svg { width: 16px; height: 16px; fill: var(--primary); }
+
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 28px;
+      animation: slideDown 1s ease-out 0.2s both;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 12px 20px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      min-width: 90px;
+    }
+    .stat-num {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      animation: slideDown 1s ease-out 0.3s both;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      flex-shrink: 0;
+      padding: 10px 20px;
+      border-radius: 50px;
+      border: 2px solid transparent;
+      background: var(--card);
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      white-space: nowrap;
+    }
+    .tab:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .tab.active {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(10,42,143,0.3);
+    }
+
+    .links-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      animation: slideDown 1s ease-out 0.4s both;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(10,42,143,0.06);
+    }
+    .link-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .link-card:hover {
+      transform: translateX(8px) scale(1.02);
+      box-shadow: var(--shadow-hover);
+    }
+    .link-card:hover::before { opacity: 1; }
+
+    .link-icon {
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 24px;
+      transition: transform 0.3s;
+      overflow: hidden;
+      background: #f8f9fa;
+    }
+    .link-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 16px;
+    }
+    .link-card:hover .link-icon { transform: scale(1.15) rotate(-5deg); }
+
+    .link-info { flex: 1; min-width: 0; }
+    .link-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .link-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .link-arrow {
+      width: 36px; height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .link-card:hover .link-arrow {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      transform: translateX(4px);
+    }
+    .link-arrow svg { width: 18px; height: 18px; fill: white; }
+
+    .featured {
+      background: linear-gradient(135deg, var(--primary) 0%, #0d1b5e 100%);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      animation: slideDown 1s ease-out 0.5s both;
+      box-shadow: 0 15px 40px rgba(10,42,143,0.3);
+    }
+    .featured::before {
+      content: '';
+      position: absolute;
+      top: -50%; right: -20%;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .featured-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      backdrop-filter: blur(10px);
+    }
+    .featured-label svg { width: 14px; height: 14px; fill: #ffd700; }
+    .featured h3 { font-size: 20px; font-weight: 900; margin-bottom: 6px; }
+    .featured p { font-size: 13px; opacity: 0.85; line-height: 1.5; }
+    .featured-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 10px 24px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .featured-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(227,30,36,0.4); }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(10,42,143,0.08);
+      animation: slideDown 1s ease-out 0.6s both;
+    }
+    .footer p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .footer .brand { color: var(--primary); font-weight: 800; }
+
+    .link-card.hidden { display: none; }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34,197,94,0.15);
+      color: #16a34a;
+      padding: 2px 10px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .live-dot {
+      width: 6px; height: 6px;
+      background: #22c55e;
+      border-radius: 50%;
+      position: relative;
+    }
+    .live-dot::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: #22c55e;
+      opacity: 0.4;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.4; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
   </style>
 </head>
 <body>
+
+<div class="bg-anim">
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+</div>
+
 <div class="container">
+
+  <!-- ===== COMPACT ICON GRID WITH REAL IMAGES ===== -->
+  <div class="icon-grid-wrap">
+    <div class="icon-grid-title">خدماتنا المتاحة</div>
+    <div class="icon-grid">
+      <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="icon-grid-item">
+        <div class="app-icon">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAAUBAwQCBv/EADEQAAEDAwICCAYCAwAAAAAAAAECAxEABAUSIRMxBiIyQVFhkaEUFVNisdElcTNCgf/EABkBAAMBAQEAAAAAAAAAAAAAAAIDBAEABf/EAC0RAAEEAAIIBQUBAAAAAAAAAAEAAgMREiEEFDFRYWKR8BNxosHRFSJBUrGy/9oADAMBAAIRAxEAPwBXRWrGsN3N4lp2SkgmAY5VucZw7TikLWsKSYIlXOopNIDHYaJPAJbIC9uKwBxSeim2jC/UX6qo0YX6i/VVDrPI7oi1bmb1Smim2jC/UX6q/VGjC/UX6qrtZ5HdF2rczeqU0U5aYxDziW2lrK1GAJNL8gwm2vFsoJ0iCJ57iijna92GiDxQvgLG4rBHBMejj6eObXhAqXKwvvEDlWjHWyHc5kEONpXpJIChMb1h6Oq05dB+xX4ppinUjOZIntFWx8prztLGB8hb+o/qfCSWtB3+yi4YYdZx7ybdtHFfSCAkct9q7RZMKyl62WGyEtIIGkbSDVC8navu2FraocSGrhJ6w5AT+63NO/zF+fFlv8Gpn+IxpBsZH/QTQcRyzz9lnx7LIx1gVW7S1PHSSUieRM+1Qwwyyco8GG1cFZhJTtATMeVaLC6QnHY8FodaEp+0wd/b3qpK+GjMEkqlRVv39TlWFzi94Pf3LRdDv8LAp+0usvj1WgSDPXCUxB8POo6Rvjj/AAnCAUgheudzI5VqvQ0nLYtbTSG5MkISB4Ut6Qq1ZZZ+xP4qzRw18rCBkGnb5pEpc1jr3+yswRYDpJJ+I308+zG9FveNWmWvFvEgKURsJ76X2dwbW4S8lIVAIg+dM/mq1NF02EtzuqdvxTp4nYyasOFbQEUMjcAF0Qd1pXbuhq8beM6UrCjH904VlbJK3XUcQuOJ0k6eccqhOReUElONWQoSmO/2qTkLgKCflqtREgePtS5blNuZ6gjjAjFB3pKqtMjat2ls26XNbO4hO07/ALoaydspd2HtYQ+rbbmIirfj39Wn5YuYmPL0rg5RxOjVYEcTsb9r+tqDw7JODbzDfaPGAAMWzlPkuHbxm5yVlwSopbVEkRXOd4BdBBPxG2rn2Y2q9zJPNJ1uY5SEzzJjf0pTeXJurgvFITIAgGeVOgicXh1UAN4KVPI0MIuyTuIVFN8fk7e2x4tnmg4FLOsFP+ppRRVksTZW4XKNkhYbC9IjPWx4ZU2EQCCAiY8KqtsvasIt2z1w0gpKig78qQUVN9Ph2Z938p2tP4L0KMxapcaJ5IaUgw2QJJHd/wArK5f2yxYKkTaxqSUHrcv1SiiiboUbTYvu/lYdJcciAmeVvWLsqU0GpUQf8RCvWY9qWUUVRFGI24QkveXmyv/Z" alt="PUBG">
+        </div>
+        <span>PUBG</span>
+      </a>
+      <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="icon-grid-item">
+        <div class="app-icon">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGwABAAMBAAMAAAAAAAAAAAAAAAMFBgIBBAf/xAAxEAACAQMDAgMHAgcAAAAAAAABAgMABBEFIZESQQYTMRQiMlFhcYEWoRUjJMHR4fD/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAXEQEBAQEAAAAAAAAAAAAAAAAAAREC/9oADAMBAAIRAxEAPwDCcU5pzTigcU79/wDv705pxQOKc05pxQOKc0796cUDinNXfhbR7fV724F7K0VtbwmR3DhN8gKOo7CrqDw1otzqYtbeV5B5eelb+EszE7AbfIE7ZoMV27U796336R0HpnmW8neKNljH9TGP5mMuOojBwMfvXqaf4d0S70+fUJGu4rfzjHCkk6IzKo95jkb79hvQYzinNanRND0rU/4hdzSXFvZwOkcIlnSN2Y+vUxGM47VzPpGlJO8NuwMTzRxLK9yjdI+JyG2X0wO+9Z66nOasmsxxTmvoP6N0U3FvCbm4ilkJkZDco58oKSXyF2HoM1mfEllpWnyJb6etw0nq7vOsidPyBUDetIj0LT9R1SO6tLCdY4XCecHYhX973Qdvnk/ipYvD+o23s94Z4rXKPPHIxYFQmDnYbEggj6fWqiK4ngDCCeWPq+II5XP3xRrmdlYNPKwb1BckH/VBofbPEFlYvcW2skxsguXWLOffbAJyvqTk/gml9f8AiXSJorV9Xl86Y9Xlxtkgsc75GMkms+l1cxhhHcTL1KFbpcjIHoD/AIrxLc3EzK81xLIyfCXcnp+xPpQXOradrFrpsj3t0slq8/mOBJkNKSRk7euAT9jXCaJezW1ij3cKxzkmJG6sISvUc4XAOBvVO80sgKySyMCQSGYncDA/OP2rt7u5cKHuZmCDC9UjEKMY232GNqmSi7tjrdvaxXdlqg8uO3cRNG5z5St7wAxkDq6fXuR9cQa6urPbWdzq9807Sp1QxuxLKrDPywO1VUVzcQkGGeaMgFR0OVIB3I2pLczzIqTTyyIvwq7kgfbNURcU5pzTigU796UoFOaU4oFOad6cUH//2Q==" alt="Free Fire">
+        </div>
+        <span>Free Fire</span>
+      </a>
+      <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="icon-grid-item">
+        <div class="app-icon">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGgAAAwADAQAAAAAAAAAAAAAAAAIFAwQHAf/EADMQAAECBAQCCAYCAwAAAAAAAAECAwAEEUEFEjHwIYEGM1FhobHB8RMUInFykRUygtHh/8QAGgEAAgMBAQAAAAAAAAAAAAAAAAECAwUEBv/EACERAAEEAgEFAQAAAAAAAAAAAAEAAgMRBBIxBSEyQXHB/9oADAMBAAIRAxEAPwDpHDup4e0F768/eDjW9YR00ZWRZJ0hOOoJTAsr0KSSUgpJGorp/wAhr313ziClakKzpUQrWsUm51IcLbtB2KtzjLxeqxy3uNVfJjubx3W5a3p7R4VAKCSaKOgrx941FzyS4EM1UTX6uUTFLUpWZSiVdsGV1WOKtBsiPHc7nsr9rb9IL315+8I0SWkEkkkD9084e1t+kajTYBVBFI/VPCEe6lzX+p8vOH41vXxhHuoX+B39ojJ4H4hvIUK0ZJjrlcvKMcbr8ktQDrZCqgEp5R42GF8sbtBdV+rVc4NItazHXDS+v2jHaN5iScRV1w5coP030jRtBNC+KNoeKu/xDXBzjSus9Q3+I39oe99d84RnqW/xHl5w9rU34R7KPwHxZTuUcO6FcSVIUm5BHOkNxresQumUzMynRt56TdWysLbCnGzQpQVgKINhS8SIBFFJZkSLqnShVEpGqrU7orJGUBIrw4d/vHKh0hxRE/LFnEp9+UaQW1OKbKc5X8TKVa8RRNDelYqYJjuJzmJ4dLyuIIdW7hzWdMyVFJcCz8T/ADoI5cXCjxr09q2SV0nK6AoBSCmooRTlEpci8l0ISMwOiv8Acc1b6Q46Elf8nOlpLiS8oqJyfWsUJpwFAnhFvDVYvNuhteLYkha8E+bGZ00DtSAdNKAGDKwo8mt/SI5XR8LoiE5W0pqDRIG+6Gvetd84idD3ZqZ6Nys1PTK5iYmMzqlE/wBangkdlBThFu1t+kdQFCgqkcKWp4QXvrBe8Frb9IaFCTh2NCWmkKxRLi3FJLNKo+GgKUSmoFdCBXujKJHF/ni4Z8Foyvw8tT1uWmelO3jFi99d84P1v0gQppl8RyzCBMN5XJYJbVmNUOAEFVKaEkGuvDSM0uxNIkWG3nc76BRas5NVdtacftG5e+u+cFrb9Ii9ge3Upg0bXgoANNOXtHt71rvnB+9d84LW36RJJf/Z" alt="CoD">
+        </div>
+        <span>CoD</span>
+      </a>
+      <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="icon-grid-item">
+        <div class="app-icon">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGwABAQADAQEBAAAAAAAAAAAAAAUBAgcGBAP/xAAuEAABAwMBBAkFAQAAAAAAAAABAAIEAwURBhIhIkETFDFhcZGhwdEzQmKB4RX/xAAaAQEAAwEBAQAAAAAAAAAAAAAAAwQGAQIF/8QAHhEAAgICAwEBAAAAAAAAAAAAAAECEQMSBCExE0H/2gAMAwEAAhEDEQA/AJSIi2h80IqVns0i8GsI72N6JoJL84JPL0W0vT12iZNSG97R91LjHpvUTz41LRyVndXV0S0WXAtcWuBBHIjBWFKcCIiAIiAEnAGSexAdA0RF6GzOrkcUioT+huHuvRr5rdGEO3R4wH06YafHG/1UjVF8rWgxmxm03PqElweM8I/pWVkpcnO9f1l5VCHZYlQYktuJUelVH5tBPmosvR1srZNA1Y7vxdtDyK20/qM3eQ6O6Iab2sLy5r8t+ea9Ajln40tbpiozVnLb5a/8iaIxrtrEs28huMDPNTlS1DK65fJVUHLQ/Yb4N3eymrS4XJ44uftFKVW6Cpaei9bvkWkRloftu8G7/ZTVRsl0NommS2g2sS3YwTjA7vJMyk8clD2hGrVnUcqBf9OG7yGyGyzTe1myGluW/K/OJrK21sCQyrHd3jaHmPhW4twhzBmLJpVe5rhnyWaUM/GltTTL1wmqJGmLHWtBkukupufUIDSw54R/Sq1ykiHbpEkn6dMuHjjd6r6l5zXErobO2gDh1eoB+hvPskHLk51t62HUIdHPySTk9p7URFqigEREAWQSDkEgjmFhEBTiX+6xMClMqFo+2pxj1Wt3vMm7miZLWNNJpA2AQDnmpyzhRfHGpbqKs7s6qzCLZMqQ8n//2Q==" alt="Roblox">
+        </div>
+        <span>Roblox</span>
+      </a>
+      <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="icon-grid-item">
+        <div class="app-icon">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGQABAAIDAAAAAAAAAAAAAAAAAAMFAQIE/8QAMBAAAQMCAwQIBwEAAAAAAAAAAQACAwQRBRIxEyEiQTJCUVJhcYHRJGNygpGhseH/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQIDBP/EABsRAQEBAAIDAAAAAAAAAAAAAAABEQIhEjFR/9oADAMBAAIRAxEAPwCrREXF5RERAREQEREBFBVxTSx/DzuhkGhtcHzVXTV9dTVDoq9hcwavNhlHbfQqyas46u1h72saXPcGtHMmwVRJi01TLscMhLj33DT05eqlhwkyOEuIzOnf3b8ITPq+Oe0xxOnL8kAkqH9kTb/tbtkrZNIIoR8x+Y/ge66I42RMDI2NY0cmiwWyibELY5j06j0YwD+3UjW5es531FbIiOWvr4qGLM/ieeiwan/FSwQ1eMz7Sd5bC08tB4AK8nNTtSIWNLNmSCR1uQ1Ucj64NkEcTCRlyE24u9uutS43Lk6VdQ2twmYSQAGm0sBu+7x8Va0OIQ1rOA5XgcTDqPdZe+syuyRNzAvte1iOrzWYHVRlbto2NYWXNrbndnkpey3Y6URFGBERAREQEREBERAREQf/2Q==" alt="Starlink">
+        </div>
+        <span>Starlink</span>
+      </a>
+      <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="icon-grid-item">
+        <div class="app-icon">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGwAAAgIDAQAAAAAAAAAAAAAABQYDBAACBwH/xAAxEAACAQMBBgQEBwEBAAAAAAABAwIABBEFBhIhIjFRE0FhkTJSYqEVNHKCseHwccH/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQUDBP/EAB8RAAICAgIDAQAAAAAAAAAAAAABAgMEERITITFRIv/aAAwDAQACEQMRAD8A5hVuw0+4v27iI8B8Uz0jXmm2TL+7iiHAdZS+Ud6eba3VaoilEd2Efv6n1qnkycnq8L2DbPZ6yQAXAvn5mXCPtRNaEqGFpXAfTECpMjvWZHcVTJnbOb3JkbEJYMMUuY+qINDbzZ6yuASmJRPvHiPai2R3FZkd6CFs4PcWIeoadcaezdfHlPwzHSVU66JcIVcokl8BKEuopH1Oxnp93JMuMTxhL5hUNbGye38y9jJs1aBGneMRzvOf2jpRg9KitYBVqlY6RhEfarKUsfPcTAzljJx5DuewoZNknZNv6dB05tqNOthJic+FHOZDsKtrNuwkLKp467uDXMylcfjcvP0gy/qmXYuKxcXXhyJ5I5zHHmfWho0ZTnJQ0M7DbrIDCqBPTewKp6k21OmXQixJJTPGJDsaB7ZxWbm18SRB3JYxHPmPWlwJXI8jl5+oGP8AVBflOMnDRFQnaS0Fxpsmgc6OYH08/wDelGnJYie42BjIjIz5juO4qB8AxDFnpOBj7iqZ1cnXNP4a2rA21SwdJQiftV2yvHWTixBjzR3ZRlHMZDsRS/s1dh+neCTzoOP2npRioWyLrsa+BA3enN4u00rl5m3cYj2OaNbNrtmtf+Guu7eQiN/xBCQIyceVKtM2xP5m7/RH+TQ7Y0uVqTN9pF2ynI/EnXdxMxO54YhEAZ/5QYXenK4p00sl5F7jIewxRbbb81a/ol/IpZoMmXG1pFi9vHXrQx5jyx3YxjHEYjsBVR8wtDGHpCBl7Ct6E7SXYt9NkoHnfygenn/vWqcIRdk0vor6dessLuL4cR0lH5h2p5trhV0iLkS3oS+3oa55Vuw1C4sG76JcD8UD0lUNbJxu3yvY+0U0PVhpLHTKC3xABgSxjFKlntDZvADyUT+rjH3omu4Q0ZW9Uh6TBoZfGymW9aYY1zVhqzVTCCrw4kYMs5zQuo2XCFjLHLiPWYFDbzaGytwQkl8/IR4D3oONl0t62wlcXCrZEnPmIwj1P/lI+p309Qu5Olwj0hH5RXmoajcagzefLlHwwHSNVKGpjY3V+pez/9k=" alt="USDT">
+        </div>
+        <span>USDT</span>
+      </a>
+      <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="icon-grid-item">
+        <div class="app-icon">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAABgcABAUDAgH/xAA4EAABAwMBAgsFCAMAAAAAAAABAgMEAAURBhIhBxMiMUFCUWFxgbEUUqGywRUyYmNygpHRkuHw/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAMEAQUC/8QAHxEAAgICAwEBAQAAAAAAAAAAAQIAAxEhBBIxQRNh/9oADAMBAAIRAxEAPwBYVKlHGgdFC9q+0rmlQt6FYQjmLxHPv90dNEIOWbTt2vi8W6GtxAOFOHkoT4qO6i6NwUXFaAZVyjNKPQhCl49KO5F2YhNpiWtptLbY2QUpwhPcAKzHLhLdOVyHPAHA+FJa9RoSV+WinA3BeTwUXBCCYtyjOqHQtCkZ9aEb1py7WNeLjDW2gnAdHKQf3DdTWbuEto5RJc8CrI+Naca7MTG1RLm02ptwbJJTlKu5QNC3qdGCctGODqIGpRzr7RQsxNztaSYC1YWjnLJPN+0/CganSqXrLbnLteItvaOFPuBBPujpPkMmnfdXGrZbmLZCSG0BASAOqgbsef8AdLXgqZS7q8LUN7MdxafHcPqaN786V3d8Hq4SP4pN7dV1JuU5SvX2W7NakTW1PPqUGwdlIScZNUrlG9imrZySkb0k9INbOl5KFxFx88ttRVjtB/3WZqJ9xy5lDjewG04T+Ic+aQyr+YIkjogoDD2Z+1U2q57VTapEkzCO0OtXKA/bJqQ4goKcHrIO4jypI3y3LtF5l29w5LDhSD7w6D5jBpt2J0ou7GOsSk+YoJ4VmQ1q4LA3vRkLPjkp+lXUN2Xc63EcvXv5OHBjLTG1iwhZwJDa2s95GR8RR7qNotXZauq6kKHofSk3DkPRJjMmMSl5pYWgj3gcinpqbZXaoz0hARIJHJB5iRlQ8KL1ykOWnao/yYESW5EkofZOFJPkR2GipSYWoYYUlWw8j/JB7D2igvar2zIdjuhxhxTaxzKScVKlnXR8nNqu6ZVhkGEcPTbvtSvbVJLKRu2Fb1n6VXvFl9gZMhp7aayBsq+8M+tfI+qZbacPtNvd/wB0/wBVUuV3k3VSGigJRnkto35P1r2TV1wPY524/wCeF9nbTrRduzasclpJWf4wPWgThPlpk6xeQg5EdpDR8cZPzUyS6xpTTz9wnEcaRnZzvUrqoH/dvZSOmSXZsx6VIVtOvLK1ntJOTVFKdV3LeNWa68H2aujbf9paqt8dQygOhxf6U8o+lO27W1meW1yn1NMtAkgYAJPTk0hLVdZtnkqkW57iXlIKNvZBIBxnGebmrzOuc+4r2p01+QfzHCoDyphAIwY5lDDBjqagadnlcSBNZXIb3ninwtQ8R01Ve0tMSo8S+y4PxZSaSyFqbWFoUUqByCDgituLrDUcVAQzd5OyOYLIX8wNLalD8iX4tTfIzmdLTFKHHPMtjuyo1YlS7BpFkvTJAVJxyU7lOq/Sno8fjSpk6x1HKQUPXeTsnn2CEfKBWIta3FlbilKUreVKOSa1alXYm18aus5A3NzVWp5mpJoceHFRm88SwDkJ7z2nvrBqVKZHz//Z" alt="واتساب">
+        </div>
+        <span>واتساب</span>
+      </a>
+      <a href="https://t.me/wdBADRst15" target="_blank" class="icon-grid-item">
+        <div class="app-icon">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGwAAAwACAwAAAAAAAAAAAAAAAAUGAgQBAwf/xAA0EAAAAwYFAwEIAAcAAAAAAAABAhEAAwQFITESQVFhcSJioUIGEyNSgZHC0iRDY6LB4fD/xAAZAQEBAQEBAQAAAAAAAAAAAAAEAAMCAQX/xAAkEQACAQIFBQEBAAAAAAAAAAABAgADEQQFEjFRFCEiMnFBYf/aAAwDAQACEQMRAD8A9Bv3Yq1pi3HRPLF639S693OzHNV+bPnfRtCaTIsCQClDG+PUpRy7jbt0iFzYTh3VF1NtN8R/Zfy52YCmyVpXDuGq+GkHk0jnhsQxJwqqFoCtiEwjQRIp9SodTL6J+YI5inBljbZKUrhXINV8MBoielNO3jdo4JhGAiRT6luqzZO5pGuzAIRBxQEQ1QTRron5kMxTgyv+i+lPx43YvliWlaYkyHRPLL5XMixxDFMUCvShUMhD9WYXWwr82fO2jEdChsY1HV11LtAd8r4sud9GkJs8E8ziBMvSbDW9Gr7bJStcOw6r4aMmVJlEggh8QaCKsvBe5gsx9B9muoMKDM4KQxsUhjE9w7H1Hv8AZnjqUSyWOvfxQgcS+t7ZdgZT4hF7DuYCnhKji57D+ybg5dFxo/w7kwl+caF+7bExkz2XQhH718QwmNhEpQGlNfo1NAxL+NOD4jv3MIAITEHU832Blnte8RzDOtTCb7B/tsVru1ULtEthaaUS+8SSp6LuZOBKIApsIrZB1aw5QEviy520aLlopMoaoB8QtRBUa0tmiVrXDuOq+Gzxo8xNsu9D9hbtSlK4dg1Xw0XMumZxKBhR6NAGzWlrICWw5cbatGTd2Z1NIgBAAU2IEsg6N5gj5mWYjwH2bUP7QzFyXCLwr0P6hVH7g3ZLoh3M5qB5s/UABXZBoQR0/wCuyVW4ZppL3sLGfOFd7jUbgfhnpoAAAgWaQ9rXuKZO3Yfy3fkRbqlc/iIIAdPgF+5CwCPUXgW0JlFjHRz2JEuEDiCF0AAQGNQoNTqXO0ZicUlWlZd5zLRSZQwqnxS1AFRrW3alaVw7hqvhoyUEM8msOBVofEKXQKtZ8KCfLlxvq2eNPkJrlw8D9heyVthz421ZdNpWWYEKYhgI+KFByEP1ZjfuWtKYtw0TywFc19S693GzFVihuI10V10ttIt7Ko90YSmhnhkBVL1AmrYDLo4FWEf0v0DRrceU9S6d3GzFtkrWuHcdV8MrrW4gjl6cmRAy6PBVhH9L9Atm7lUweGwhCvC1RTdIL9WtLdqUrXCuQ6r4Y+ielNO3ndrrW4kMvTkxdKZWWAIJjjjfnoYwZdpd2Y8f2/431Y2v6U/Hndi/ctKUxbBojFZi5uY1EVF0rtP/2Q==" alt="تيليجرام">
+        </div>
+        <span>تيليجرام</span>
+      </a>
+    </div>
+  </div>
+
   <div class="header">
-    <div class="store-name">WAD BADR <span>STOR</span></div>
-    <div class="tagline">وكالة لتحويل العملات وشحن الألعاب 24/7</div>
+    <div class="logo-wrap">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="store-name">WAD <span>BADR</span><br>STOR</div>
+    </div>
+    <div class="tagline">وكالة لتحويل العملات · شحن الألعاب · دفع فواتير</div>
+    <div class="verified-badge">
+      <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      موثوق ومضمون 100%
+    </div>
   </div>
+
   <div class="stats-bar">
-    <div class="stat-item"><div class="stat-num">1247</div><div class="stat-label">زوار اليوم</div></div>
-    <div class="stat-item"><div class="stat-num">8342</div><div class="stat-label">طلب منفذ</div></div>
+    <div class="stat-item">
+      <div class="stat-num">5K+</div>
+      <div class="stat-label">عميل سعيد</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">دعم فني</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">أمان معاملات</div>
+    </div>
   </div>
-  <div class="links-grid">
-    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card">
-      <div class="link-icon">💱</div>
-      <div><div class="link-title">تحويل العملات</div><div class="link-desc">أفضل سعر صرف جنيه - دولار - ريال</div></div>
-    </a>
-    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card">
-      <div class="link-icon">🎮</div>
-      <div><div class="link-title">شحن ألعاب</div><div class="link-desc">PUBG - Free Fire - CoD - Roblox</div></div>
-    </a>
-    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card">
-      <div class="link-icon">🛰️</div>
-      <div><div class="link-title">دفع فواتير Starlink</div><div class="link-desc">تجديد اشتراكك الشهري بأسرع وقت</div></div>
-    </a>
-    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card">
-      <div class="link-icon">📱</div>
-      <div><div class="link-title">تواصل واتساب</div><div class="link-desc">خدمة عملاء متاحة 24/7 للرد الفوري</div></div>
+
+  <div class="tabs">
+    <button class="tab active" data-cat="all">الكل</button>
+    <button class="tab" data-cat="social">منصات التواصل</button>
+    <button class="tab" data-cat="services">الخدمات</button>
+    <button class="tab" data-cat="payment">الدفع</button>
+  </div>
+
+  <div class="featured">
+    <div class="featured-label">
+      <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+      عرض مميز
+    </div>
+    <h3>🚀 تحويل فوري بأفضل الأسعار</h3>
+    <p>دعم جميع العملات: درهم إماراتي، ريال سعودي، ريال عماني، ليرة تركية، جنيه مصري، و USDT</p>
+    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="featured-btn">
+      💱 ابدأ التحويل الآن
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
     </a>
   </div>
-  <div class="footer">© 2026 WAD BADR STOR - جميع الحقوق محفوظة</div>
+
+  <div class="links-grid" id="linksGrid">
+
+    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card" data-cat="social">
+      <div class="link-icon">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAABgcABAUDAgH/xAA4EAABAwMBAgsFCAMAAAAAAAABAgMEAAURBhIhBxMiMUFCUWFxgbEUUqGywRUyYmNygpHRkuHw/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAMEAQUC/8QAHxEAAgICAwEBAQAAAAAAAAAAAQIAAxEhBBIxQRNh/9oADAMBAAIRAxEAPwBYVKlHGgdFC9q+0rmlQt6FYQjmLxHPv90dNEIOWbTt2vi8W6GtxAOFOHkoT4qO6i6NwUXFaAZVyjNKPQhCl49KO5F2YhNpiWtptLbY2QUpwhPcAKzHLhLdOVyHPAHA+FJa9RoSV+WinA3BeTwUXBCCYtyjOqHQtCkZ9aEb1py7WNeLjDW2gnAdHKQf3DdTWbuEto5RJc8CrI+Naca7MTG1RLm02ptwbJJTlKu5QNC3qdGCctGODqIGpRzr7RQsxNztaSYC1YWjnLJPN+0/CganSqXrLbnLteItvaOFPuBBPujpPkMmnfdXGrZbmLZCSG0BASAOqgbsef8AdLXgqZS7q8LUN7MdxafHcPqaN786V3d8Hq4SP4pN7dV1JuU5SvX2W7NakTW1PPqUGwdlIScZNUrlG9imrZySkb0k9INbOl5KFxFx88ttRVjtB/3WZqJ9xy5lDjewG04T+Ic+aQyr+YIkjogoDD2Z+1U2q57VTapEkzCO0OtXKA/bJqQ4goKcHrIO4jypI3y3LtF5l29w5LDhSD7w6D5jBpt2J0ou7GOsSk+YoJ4VmQ1q4LA3vRkLPjkp+lXUN2Xc63EcvXv5OHBjLTG1iwhZwJDa2s95GR8RR7qNotXZauq6kKHofSk3DkPRJjMmMSl5pYWgj3gcinpqbZXaoz0hARIJHJB5iRlQ8KL1ykOWnao/yYESW5EkofZOFJPkR2GipSYWoYYUlWw8j/JB7D2igvar2zIdjuhxhxTaxzKScVKlnXR8nNqu6ZVhkGEcPTbvtSvbVJLKRu2Fb1n6VXvFl9gZMhp7aayBsq+8M+tfI+qZbacPtNvd/wB0/wBVUuV3k3VSGigJRnkto35P1r2TV1wPY524/wCeF9nbTrRduzasclpJWf4wPWgThPlpk6xeQg5EdpDR8cZPzUyS6xpTTz9wnEcaRnZzvUrqoH/dvZSOmSXZsx6VIVtOvLK1ntJOTVFKdV3LeNWa68H2aujbf9paqt8dQygOhxf6U8o+lO27W1meW1yn1NMtAkgYAJPTk0hLVdZtnkqkW57iXlIKNvZBIBxnGebmrzOuc+4r2p01+QfzHCoDyphAIwY5lDDBjqagadnlcSBNZXIb3ninwtQ8R01Ve0tMSo8S+y4PxZSaSyFqbWFoUUqByCDgituLrDUcVAQzd5OyOYLIX8wNLalD8iX4tTfIzmdLTFKHHPMtjuyo1YlS7BpFkvTJAVJxyU7lOq/Sno8fjSpk6x1HKQUPXeTsnn2CEfKBWIta3FlbilKUreVKOSa1alXYm18aus5A3NzVWp5mpJoceHFRm88SwDkJ7z2nvrBqVKZHz//Z" alt="WhatsApp">
+      </div>
+      <div class="link-info">
+        <div class="link-title">واتساب الأعمال <span class="live-pill"><span class="live-dot"></span>متصل</span></div>
+        <div class="link-desc">تواصل مباشر للطلبات والاستفسارات</div>
+      </div>
+      <div class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </a>
+
+    <a href="https://t.me/wdBADRst15" target="_blank" class="link-card" data-cat="social">
+      <div class="link-icon">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGwAAAwACAwAAAAAAAAAAAAAAAAUGAgQBAwf/xAA0EAAAAwYFAwEIAAcAAAAAAAABAhEAAwQFITESQVFhcSJioUIGEyNSgZHC0iRDY6LB4fD/xAAZAQEBAQEBAQAAAAAAAAAAAAAEAAMCAQX/xAAkEQACAQIFBQEBAAAAAAAAAAABAgADEQQFEjFRFCEiMnFBYf/aAAwDAQACEQMRAD8A9Bv3Yq1pi3HRPLF639S693OzHNV+bPnfRtCaTIsCQClDG+PUpRy7jbt0iFzYTh3VF1NtN8R/Zfy52YCmyVpXDuGq+GkHk0jnhsQxJwqqFoCtiEwjQRIp9SodTL6J+YI5inBljbZKUrhXINV8MBoielNO3jdo4JhGAiRT6luqzZO5pGuzAIRBxQEQ1QTRron5kMxTgyv+i+lPx43YvliWlaYkyHRPLL5XMixxDFMUCvShUMhD9WYXWwr82fO2jEdChsY1HV11LtAd8r4sud9GkJs8E8ziBMvSbDW9Gr7bJStcOw6r4aMmVJlEggh8QaCKsvBe5gsx9B9muoMKDM4KQxsUhjE9w7H1Hv8AZnjqUSyWOvfxQgcS+t7ZdgZT4hF7DuYCnhKji57D+ybg5dFxo/w7kwl+caF+7bExkz2XQhH718QwmNhEpQGlNfo1NAxL+NOD4jv3MIAITEHU832Blnte8RzDOtTCb7B/tsVru1ULtEthaaUS+8SSp6LuZOBKIApsIrZB1aw5QEviy520aLlopMoaoB8QtRBUa0tmiVrXDuOq+Gzxo8xNsu9D9hbtSlK4dg1Xw0XMumZxKBhR6NAGzWlrICWw5cbatGTd2Z1NIgBAAU2IEsg6N5gj5mWYjwH2bUP7QzFyXCLwr0P6hVH7g3ZLoh3M5qB5s/UABXZBoQR0/wCuyVW4ZppL3sLGfOFd7jUbgfhnpoAAAgWaQ9rXuKZO3Yfy3fkRbqlc/iIIAdPgF+5CwCPUXgW0JlFjHRz2JEuEDiCF0AAQGNQoNTqXO0ZicUlWlZd5zLRSZQwqnxS1AFRrW3alaVw7hqvhoyUEM8msOBVofEKXQKtZ8KCfLlxvq2eNPkJrlw8D9heyVthz421ZdNpWWYEKYhgI+KFByEP1ZjfuWtKYtw0TywFc19S693GzFVihuI10V10ttIt7Ko90YSmhnhkBVL1AmrYDLo4FWEf0v0DRrceU9S6d3GzFtkrWuHcdV8MrrW4gjl6cmRAy6PBVhH9L9Atm7lUweGwhCvC1RTdIL9WtLdqUrXCuQ6r4Y+ielNO3ndrrW4kMvTkxdKZWWAIJjjjfnoYwZdpd2Y8f2/431Y2v6U/Hndi/ctKUxbBojFZi5uY1EVF0rtP/2Q==" alt="Telegram">
+      </div>
+      <div class="link-info">
+        <div class="link-title">قناة تيليجرام <span class="live-pill"><span class="live-dot"></span>متصل</span></div>
+        <div class="link-desc">إشعارات فورية للأسعار والعروض الحصرية</div>
+      </div>
+      <div class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </a>
+
+    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card" data-cat="services">
+      <div class="link-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">💱</div>
+      <div class="link-info">
+        <div class="link-title">تحويل العملات <span class="live-pill"><span class="live-dot"></span>نشط</span></div>
+        <div class="link-desc">أسعار تنافسية · سرعة في التنفيذ · دعم 6+ عملات</div>
+      </div>
+      <div class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </a>
+
+    <a href="https://www.tiktok.com/@wd_badr_77?_r=1&_t=ZS-97vDaFPljm8" target="_blank" class="link-card" data-cat="social">
+      <div class="link-icon">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAAkAEADASIAAhEBAxEB/8QAGwAAAgIDAQAAAAAAAAAAAAAAAAQGBwIDCAX/xAAzEAABAwMBAwkHBQAAAAAAAAABAgMEAAURBhIhQRcxNVFSc5Oy4QcUFlVhodETIkJx8P/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/EABoRAQEAAwEBAAAAAAAAAAAAAAABAhExIRL/2gAMAwEAAhEDEQA/ALOrROWpuDIWgkKS2ogjgcGt9L3Ho6T3K/KaCivjTUvziR9vxQNaalz0xI+34rwm0LdcS22kqWogJA5yalUvQdwg2By6y32UFCQr9HnJGeuh2zGdetqR3WFggRZq786+xI3bSUgbBxkA7v8AYqOfGmpfnEj7firPv+oLfZ7Vbo92g+9Q5bQSsABWMAcDz1Tt2XDcuklduSURVLJaSRjZSeFL1ZjfiZV0Rblqdt0ZxxRUtTSFKJ4kpFMUrauioncI8opqiCl7j0dJ7lflNMUvcejpPcr8poOf9MvsRdRwHpZAZS8nbJ5gObNT/XOmr9d7+27BJcguISAUrwG+vI6uNVvao7Mu6xYshS0tvOpbKkYyMnGd/wDdTluRdLVYEPw75J9zQogMK2VOBvaCcp6sceA3Uawtlurrfg9qj7aWrXACwXmEfvAPNuqu6m0vSwnXNbrt1UpsvKbLjwH8SUnKuYHIzs9nfURnxFQZz0VStotKKdrGAr6j6Hh9KLnZ5MeR0VauioncI8opqlbV0VE7hHlFNUYFYPNpeZW0vOytJScdR3UUUER5M9OdmX43pRyaac7Mvx/SiigOTTTnZl+N6UcmmnOzL8b0oooJcw0lhhtlvOw2kJTk8AMVnRRQf//Z" alt="TikTok">
+      </div>
+      <div class="link-info">
+        <div class="link-title">تيك توك</div>
+        <div class="link-desc">آخر العروض والمحتوى الحصري</div>
+      </div>
+      <div class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </a>
+
+    <a href="https://www.instagram.com/wd_badr_77?igsh=ZTJqYnEwdDUxc2R2" target="_blank" class="link-card" data-cat="social">
+      <div class="link-icon">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAArAEADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAUEAQP/xAAuEAACAgECBQEFCQAAAAAAAAABAgADBAURBhITITFRFEFhcbEiJCUyUoGCkeH/xAAYAQADAQEAAAAAAAAAAAAAAAAAAwQCBv/EACERAAIBBAICAwAAAAAAAAAAAAECAAMEESESMUFRFGFx/9oADAMBAAIRAxEAPwCXEREyWImrTsOzPzK8aogM57sfCgdyT+0oGvh6s8hfUbyDtzpyKrfIGXJarxBZtn1KKds7+JFiX6cPRMoOKV1OsIN3sYK6oPUge6TNRwXwMm3HtILVnsw8MD4P9TL2yBSVbYjmsiFJzsbmOIiRyGIiIQl/hmse1M/v9ns+k0YX4foozcetDkWW9PqMobpgDft8TOcMhEaqyw7I6sjH037SrRp2oYYdceuu6p/zKdmR/jtFfIcnA/J0aFAig+l78+5Ny77cvQ3y7PsXi3os6Dl6ykb7EDztMfEw++IfXHq+kq52natmFFvqqooTwN1VE9TtvI/EN9WRmWNQ3NWirWrfq2G28ppVTg5hUC8G446brx9SLERFznIiIhCbtO1O3AJARbKyd+Vu23yMoPxGXGwwwPlZ/kgxEtQpsckbjluKqDAMoX6mbj3q2/lvMltzW+QAPSeUTaoq9Tb3teovBm1ERE3Jp//Z" alt="Instagram">
+      </div>
+      <div class="link-info">
+        <div class="link-title">انستغرام</div>
+        <div class="link-desc">تابعنا لآخر التحديثات والعروض</div>
+      </div>
+      <div class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </a>
+
+    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card" data-cat="services">
+      <div class="link-icon">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAAUBAwQCBv/EADEQAAEDAwICCAYCAwAAAAAAAAECAxEABAUSIRMxBiIyQVFhkaEUFVNisdElcTNCgf/EABkBAAMBAQEAAAAAAAAAAAAAAAIDBAEABf/EAC0RAAEEAAIIBQUBAAAAAAAAAAEAAgMREiEEFDFRYWKR8BNxosHRFSJBUrGy/9oADAMBAAIRAxEAPwBXRWrGsN3N4lp2SkgmAY5VucZw7TikLWsKSYIlXOopNIDHYaJPAJbIC9uKwBxSeim2jC/UX6qo0YX6i/VVDrPI7oi1bmb1Smim2jC/UX6q/VGjC/UX6qrtZ5HdF2rczeqU0U5aYxDziW2lrK1GAJNL8gwm2vFsoJ0iCJ57iijna92GiDxQvgLG4rBHBMejj6eObXhAqXKwvvEDlWjHWyHc5kEONpXpJIChMb1h6Oq05dB+xX4ppinUjOZIntFWx8prztLGB8hb+o/qfCSWtB3+yi4YYdZx7ybdtHFfSCAkct9q7RZMKyl62WGyEtIIGkbSDVC8navu2FraocSGrhJ6w5AT+63NO/zF+fFlv8Gpn+IxpBsZH/QTQcRyzz9lnx7LIx1gVW7S1PHSSUieRM+1Qwwyyco8GG1cFZhJTtATMeVaLC6QnHY8FodaEp+0wd/b3qpK+GjMEkqlRVv39TlWFzi94Pf3LRdDv8LAp+0usvj1WgSDPXCUxB8POo6Rvjj/AAnCAUgheudzI5VqvQ0nLYtbTSG5MkISB4Ut6Qq1ZZZ+xP4qzRw18rCBkGnb5pEpc1jr3+yswRYDpJJ+I308+zG9FveNWmWvFvEgKURsJ76X2dwbW4S8lIVAIg+dM/mq1NF02EtzuqdvxTp4nYyasOFbQEUMjcAF0Qd1pXbuhq8beM6UrCjH904VlbJK3XUcQuOJ0k6eccqhOReUElONWQoSmO/2qTkLgKCflqtREgePtS5blNuZ6gjjAjFB3pKqtMjat2ls26XNbO4hO07/ALoaydspd2HtYQ+rbbmIirfj39Wn5YuYmPL0rg5RxOjVYEcTsb9r+tqDw7JODbzDfaPGAAMWzlPkuHbxm5yVlwSopbVEkRXOd4BdBBPxG2rn2Y2q9zJPNJ1uY5SEzzJjf0pTeXJurgvFITIAgGeVOgicXh1UAN4KVPI0MIuyTuIVFN8fk7e2x4tnmg4FLOsFP+ppRRVksTZW4XKNkhYbC9IjPWx4ZU2EQCCAiY8KqtsvasIt2z1w0gpKig78qQUVN9Ph2Z938p2tP4L0KMxapcaJ5IaUgw2QJJHd/wArK5f2yxYKkTaxqSUHrcv1SiiiboUbTYvu/lYdJcciAmeVvWLsqU0GpUQf8RCvWY9qWUUVRFGI24QkveXmyv/Z" alt="PUBG">
+      </div>
+      <div class="link-info">
+        <div class="link-title">شحن الألعاب</div>
+        <div class="link-desc">PUBG · Free Fire · Call of Duty · Roblox</div>
+      </div>
+      <div class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </a>
+
+    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card" data-cat="services">
+      <div class="link-icon">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGQABAAIDAAAAAAAAAAAAAAAAAAMFAQIE/8QAMBAAAQMCAwQIBwEAAAAAAAAAAQACAwQRBRIxEyEiQTJCUVJhcYHRJGNygpGhseH/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQIDBP/EABsRAQEBAAIDAAAAAAAAAAAAAAABEQIhEjFR/9oADAMBAAIRAxEAPwCrREXF5RERAREQEREBFBVxTSx/DzuhkGhtcHzVXTV9dTVDoq9hcwavNhlHbfQqyas46u1h72saXPcGtHMmwVRJi01TLscMhLj33DT05eqlhwkyOEuIzOnf3b8ITPq+Oe0xxOnL8kAkqH9kTb/tbtkrZNIIoR8x+Y/ge66I42RMDI2NY0cmiwWyibELY5j06j0YwD+3UjW5es531FbIiOWvr4qGLM/ieeiwan/FSwQ1eMz7Sd5bC08tB4AK8nNTtSIWNLNmSCR1uQ1Ucj64NkEcTCRlyE24u9uutS43Lk6VdQ2twmYSQAGm0sBu+7x8Va0OIQ1rOA5XgcTDqPdZe+syuyRNzAvte1iOrzWYHVRlbto2NYWXNrbndnkpey3Y6URFGBERAREQEREBERAREQf/2Q==" alt="Starlink">
+      </div>
+      <div class="link-info">
+        <div class="link-title">دفع فواتير Starlink</div>
+        <div class="link-desc">تفعيل فوري · دفع آمن · دعم متواصل</div>
+      </div>
+      <div class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </a>
+
+    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card" data-cat="payment">
+      <div class="link-icon">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABAAEADASIAAhEBAxEB/8QAGwAAAgIDAQAAAAAAAAAAAAAABQYDBAACBwH/xAAxEAACAQMBBgQEBwEBAAAAAAABAwIABBEFBhIhIjFRE0FhkTJSYqEVNHKCseHwccH/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQUDBP/EAB8RAAICAgIDAQAAAAAAAAAAAAABAgMEERITITFRIv/aAAwDAQACEQMRAD8A5hVuw0+4v27iI8B8Uz0jXmm2TL+7iiHAdZS+Ud6eba3VaoilEd2Efv6n1qnkycnq8L2DbPZ6yQAXAvn5mXCPtRNaEqGFpXAfTECpMjvWZHcVTJnbOb3JkbEJYMMUuY+qINDbzZ6yuASmJRPvHiPai2R3FZkd6CFs4PcWIeoadcaezdfHlPwzHSVU66JcIVcokl8BKEuopH1Oxnp93JMuMTxhL5hUNbGye38y9jJs1aBGneMRzvOf2jpRg9KitYBVqlY6RhEfarKUsfPcTAzljJx5DuewoZNknZNv6dB05tqNOthJic+FHOZDsKtrNuwkLKp467uDXMylcfjcvP0gy/qmXYuKxcXXhyJ5I5zHHmfWho0ZTnJQ0M7DbrIDCqBPTewKp6k21OmXQixJJTPGJDsaB7ZxWbm18SRB3JYxHPmPWlwJXI8jl5+oGP8AVBflOMnDRFQnaS0Fxpsmgc6OYH08/wDelGnJYie42BjIjIz5juO4qB8AxDFnpOBj7iqZ1cnXNP4a2rA21SwdJQiftV2yvHWTixBjzR3ZRlHMZDsRS/s1dh+neCTzoOP2npRioWyLrsa+BA3enN4u00rl5m3cYj2OaNbNrtmtf+Guu7eQiN/xBCQIyceVKtM2xP5m7/RH+TQ7Y0uVqTN9pF2ynI/EnXdxMxO54YhEAZ/5QYXenK4p00sl5F7jIewxRbbb81a/ol/IpZoMmXG1pFi9vHXrQx5jyx3YxjHEYjsBVR8wtDGHpCBl7Ct6E7SXYt9NkoHnfygenn/vWqcIRdk0vor6dessLuL4cR0lH5h2p5trhV0iLkS3oS+3oa55Vuw1C4sG76JcD8UD0lUNbJxu3yvY+0U0PVhpLHTKC3xABgSxjFKlntDZvADyUT+rjH3omu4Q0ZW9Uh6TBoZfGymW9aYY1zVhqzVTCCrw4kYMs5zQuo2XCFjLHLiPWYFDbzaGytwQkl8/IR4D3oONl0t62wlcXCrZEnPmIwj1P/lI+p309Qu5Olwj0hH5RXmoajcagzefLlHwwHSNVKGpjY3V+pez/9k=" alt="USDT">
+      </div>
+      <div class="link-info">
+        <div class="link-title">USDT TRC20</div>
+        <div class="link-desc">دفع آمن وسريع عبر العملات الرقمية</div>
+      </div>
+      <div class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </a>
+
+    <a href="https://wa.me/message/SRAR7TNQ4VEKC1?src=qr" target="_blank" class="link-card" data-cat="payment">
+      <div class="link-icon" style="background: linear-gradient(135deg, #0a2a8f 0%, #1e4ad4 100%);">🏦</div>
+      <div class="link-info">
+        <div class="link-title">التحويل البنكي</div>
+        <div class="link-desc">جميع البنوك المدعومة في المنطقة</div>
+      </div>
+      <div class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    <p>© 2026 <span class="brand">WAD BADR STOR</span> · جميع الحقوق محفوظة</p>
+    <p style="margin-top:4px;">ثقة وأمان في كل معاملة 🔒</p>
+  </div>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const cards = document.querySelectorAll('.link-card');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const cat = tab.dataset.cat;
+      cards.forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.classList.remove('hidden');
+          card.style.animation = 'slideDown 0.5s ease-out both';
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  cards.forEach((card, i) => {
+    card.style.animationDelay = (0.5 + i * 0.08) + 's';
+  });
+</script>
+
 </body>
-</html>
+          </html>
